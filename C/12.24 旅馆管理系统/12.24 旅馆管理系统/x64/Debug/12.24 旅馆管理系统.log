@@ -1,0 +1,7 @@
+﻿  function.c
+D:\code\C\12.24 旅馆管理系统\12.24 旅馆管理系统\head.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+D:\code\C\12.24 旅馆管理系统\12.24 旅馆管理系统\function.c(28,85): warning C4244: “函数”: 从“time_t”转换到“int”，可能丢失数据
+D:\code\C\12.24 旅馆管理系统\12.24 旅馆管理系统\function.c(28,113): warning C4244: “函数”: 从“time_t”转换到“int”，可能丢失数据
+D:\code\C\12.24 旅馆管理系统\12.24 旅馆管理系统\function.c(70,86): warning C4244: “函数”: 从“time_t”转换到“int”，可能丢失数据
+D:\code\C\12.24 旅馆管理系统\12.24 旅馆管理系统\function.c(70,114): warning C4244: “函数”: 从“time_t”转换到“int”，可能丢失数据
+  12.24 旅馆管理系统.vcxproj -> D:\code\C\12.24 旅馆管理系统\x64\Debug\12.24 旅馆管理系统.exe

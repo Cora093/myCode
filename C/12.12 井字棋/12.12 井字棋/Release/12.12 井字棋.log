@@ -1,0 +1,9 @@
+﻿  game.c
+D:\code\C\12.12 井字棋\12.12 井字棋\game.c(35,7): warning C4013: “gets”未定义；假设外部返回 int
+  test.c
+  正在生成代码
+  3 of 14 functions (21.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    3 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  12.12 井字棋.vcxproj -> D:\code\C\12.12 井字棋\Release\12.12 井字棋.exe

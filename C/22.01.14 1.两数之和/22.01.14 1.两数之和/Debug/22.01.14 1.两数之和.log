@@ -1,0 +1,4 @@
+﻿  源.c
+D:\code\C\22.01.14 1.两数之和\22.01.14 1.两数之和\源.c(25): warning C4715: “twoSum”: 不是所有的控件路径都返回值
+MSVCRTD.lib(exe_main.obj) : error LNK2019: 无法解析的外部符号 _main，函数 "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ) 中引用了该符号
+D:\code\C\22.01.14 1.两数之和\Debug\22.01.14 1.两数之和.exe : fatal error LNK1120: 1 个无法解析的外部命令

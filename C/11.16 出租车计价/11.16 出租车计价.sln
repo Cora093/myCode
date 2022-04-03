@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31829.152
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "11.16 出租车计价", "11.16 出租车计价\11.16 出租车计价.vcxproj", "{645D47FE-2008-47CE-82A7-B4CDC82ECE4A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{645D47FE-2008-47CE-82A7-B4CDC82ECE4A}.Debug|x64.ActiveCfg = Debug|x64
+		{645D47FE-2008-47CE-82A7-B4CDC82ECE4A}.Debug|x64.Build.0 = Debug|x64
+		{645D47FE-2008-47CE-82A7-B4CDC82ECE4A}.Debug|x86.ActiveCfg = Debug|Win32
+		{645D47FE-2008-47CE-82A7-B4CDC82ECE4A}.Debug|x86.Build.0 = Debug|Win32
+		{645D47FE-2008-47CE-82A7-B4CDC82ECE4A}.Release|x64.ActiveCfg = Release|x64
+		{645D47FE-2008-47CE-82A7-B4CDC82ECE4A}.Release|x64.Build.0 = Release|x64
+		{645D47FE-2008-47CE-82A7-B4CDC82ECE4A}.Release|x86.ActiveCfg = Release|Win32
+		{645D47FE-2008-47CE-82A7-B4CDC82ECE4A}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {257BEB51-A658-4F1B-B468-DEA4B697E4F7}
+	EndGlobalSection
+EndGlobal
