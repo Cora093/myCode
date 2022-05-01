@@ -770,7 +770,66 @@ int main() {
 
 ##### 4.5.3 递增运算符重载
 
+```c++
+#include<iostream>
+using namespace std;
 
+class MyInteger {
+	friend ostream& operator<< (ostream& cout, MyInteger myint);
+public:
+	MyInteger() {
+		m_Num = 0;
+	}
+	//重载前置++运算符
+	//此处返回引用是为了一直对一个数据进行递增操作
+	MyInteger& operator++() {
+		//先进行++运算
+		m_Num++;
+		//再返回自身
+		return *this;
+	}
+	//重载后置++运算符
+	//int代表占位参数，可以用于区分前置和后置递增
+	//此处返回值
+	MyInteger operator++(int){
+		//先记录当前值
+		MyInteger temp = *this;
+		//再递增
+		m_Num++;
+		//再返回
+		return temp;
+	}
+private:
+	int m_Num;
+};
+
+//重载<<运算符
+ostream& operator<< (ostream& cout, MyInteger myint) {
+	cout << myint.m_Num;
+	return cout;
+}
+
+void test01() {
+	MyInteger myint;
+	cout << ++myint << endl;
+	cout << myint << endl;
+}
+
+void test02() {
+	MyInteger myint;
+	cout << myint++<< endl;
+	cout << myint << endl;
+}
+
+int main() {
+	test01();
+	test02();
+
+	system("pause");
+	return 0;
+}
+
+```
 
 
 
@@ -802,13 +861,27 @@ int main() {
 
 #### 4.6  继承
 
+下级别的成员除了拥有上一级的共性，还有自己的特性
 
-
-
+这个时候我们就可以考虑利用继承的技术，减少重复代码
 
 ##### 4.6.1 继承的基本语法
 
+继承的好处：==可以减少重复的代码==
 
+`class 子类 : 继承方式  父类`
+
+A 类称为子类 或 派生类
+
+B 类称为父类 或 基类
+
+
+
+**派生类中的成员，包含两大部分**：
+
+一类是从基类继承过来的，一类是自己增加的成员。
+
+从基类继承过过来的表现其共性，而新增的成员体现了其个性。
 
 
 
@@ -816,45 +889,44 @@ int main() {
 
 ##### 4.6.2 继承方式
 
+- 三种继承方式：公共、保护、私有
+- 继承的语法：`class 子类 : 继承方式  父类`
 
-
-
+![image-20220425095823691](https://s2.loli.net/2022/04/25/aI9CKhDSg1O7fbr.png)
 
 
 
 ##### 4.6.3 继承中的对象模型
 
-
-
-
-
-
+- 父类中所有非静态成员属性都会被子类继承下去
+- 可以通过`sizeof`验证
 
 
 
 ##### 4.6.4 继承中构造和析构顺序
 
-
-
-
-
+- 继承中先调用父类构造函数，再调用子类构造函数，析构顺序与构造相反
 
 
 
 
 ##### 4.6.5 继承同名成员处理方式
 
+问题：当子类与父类出现同名的成员，如何通过子类对象，访问到子类或父类中同名的数据呢？
 
 
 
-
-
+* 访问子类同名成员   直接访问即可
+* 访问父类同名成员   需要加作用域
+* 同名成员函数同理
+* 当子类与父类拥有同名的成员函数，子类会**隐藏**父类中同名成员函数，**加作用域**可以访问到父类中同名函数
 
 
 
 ##### 4.6.6 继承同名静态成员处理方式
 
-
+- 同名静态成员处理方式**和非静态处理方式一样**
+- 有两种访问的方式（通过对象 和 通过类名）
 
 
 
@@ -864,19 +936,81 @@ int main() {
 
 ##### 4.6.7 多继承语法
 
+- C++允许**一个类继承多个类**
+
+
+语法：` class 子类 ：继承方式 父类1 ， 继承方式 父类2...`
 
 
 
+- 多继承可能会引发父类中有同名成员出现，需要加作用域区分
 
 
+- C++实际开发中**不建议用多继承**
 
 
 
 ##### 4.6.8 菱形继承
 
+**菱形继承概念：**
+
+​	两个派生类继承同一个基类
+
+​	又有某个类同时继承者两个派生类
+
+​	这种继承被称为菱形继承，或者钻石继承
+
+![image-20220425145144401](https://s2.loli.net/2022/04/25/xTEPajz1Q3dI2D5.png)
 
 
 
+**菱形继承问题：**
+
+1.     羊继承了动物的数据，驼同样继承了动物的数据，当草泥马使用数据时，就会产生二义性。
+
+2.     草泥马继承自动物的数据继承了两份，其实这份数据我们只需要一份就可以。
+
+
+
+* 菱形继承带来的主要问题是子类继承两份相同的数据，导致资源浪费以及毫无意义
+* 利用**虚继承**可以解决菱形继承问题：继承前加`virtual`关键字后，变为虚继承，此时公共的父类Animal称为**虚基类**
+
+
+
+```C++
+class Animal
+{
+public:
+	int m_Age;
+};
+
+//继承前加virtual关键字后，变为虚继承
+//此时公共的父类Animal称为虚基类
+class Sheep : virtual public Animal {};
+class Tuo   : virtual public Animal {};
+class SheepTuo : public Sheep, public Tuo {};
+
+void test01()
+{
+	SheepTuo st;
+	st.Sheep::m_Age = 100;
+	st.Tuo::m_Age = 200;
+
+	cout << "st.Sheep::m_Age = " << st.Sheep::m_Age << endl;
+	cout << "st.Tuo::m_Age = " <<  st.Tuo::m_Age << endl;
+	cout << "st.m_Age = " << st.m_Age << endl;
+}
+
+
+int main() {
+
+	test01();
+
+	system("pause");
+
+	return 0;
+}
+```
 
 
 
