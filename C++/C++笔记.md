@@ -233,9 +233,9 @@ C++面向对象的三大特性：封装、继承、多态
 
 注意事项
 
-- `Person(10)`单独写就是匿名对象  当前行结束之后，马上析构
+- `Person(10)`单独写就是**匿名对象** ，当前行结束之后，马上析构
 - 调用**无参**构造函数**不能加括号**，如果加了编译器认为这是一个函数声明：`Person p2();`错误
-- 不能利用 拷贝构造函数 初始化匿名对象 编译器会认为是对象声明：`Person (p3);`错误
+- 不能利用 拷贝构造函数 初始化匿名对象， 编译器会认为是对象声明：`Person (p3);`错误
 
 ```c++
 //1、构造函数分类
@@ -846,7 +846,50 @@ c++编译器至少给一个类添加4个函数
 
 如果类中有属性指向**堆区**，做赋值操作时也会出现**深浅拷贝问题**
 
+```c++
+class Person
+{
+public:
 
+	Person(int age)
+	{
+		//将年龄数据开辟到堆区
+		m_Age = new int(age);
+	}
+
+	//重载赋值运算符 
+	Person& operator=(Person &p)
+	{
+		if (m_Age != NULL)
+		{
+			delete m_Age;
+			m_Age = NULL;
+		}
+		//编译器提供的代码是浅拷贝
+		//m_Age = p.m_Age;
+
+		//提供深拷贝 解决浅拷贝的问题
+		m_Age = new int(*p.m_Age);
+
+		//返回自身
+		return *this;
+	}
+
+
+	~Person()
+	{
+		if (m_Age != NULL)
+		{
+			delete m_Age;
+			m_Age = NULL;
+		}
+	}
+
+	//年龄的指针
+	int *m_Age;
+
+};
+```
 
 
 
@@ -854,7 +897,64 @@ c++编译器至少给一个类添加4个函数
 
 ##### 4.5.5 关系运算符重载
 
+- 重载关系运算符，可以让两个自定义类型对象进行对比操作
 
+```c++
+#include <iostream>
+using namespace std;
+#include<string>
+
+class Person {
+public:
+	string m_Name;
+	int m_Age;
+
+	Person(string name,int age) {//构造函数
+		this->m_Age = age;
+		this->m_Name = name;
+	}
+
+	bool operator==(Person &p) {
+		if (this->m_Age == p.m_Age && this->m_Name == p.m_Name) {
+			return true;
+		}
+		return false;
+	}
+
+	bool operator!=(Person& p) {
+		if (this->m_Age == p.m_Age && this->m_Name == p.m_Name) {
+			return false;
+		}
+		return true;
+	}
+};
+
+void test01() {
+	Person p1("小王", 18);
+	Person p2("小王", 18);
+	Person p3("小李", 18);
+	if (p1 == p2) {
+		cout << "p1和p2相等" << endl;
+	}
+	else {
+		cout << "p1和p2不相等" << endl;
+	}
+	if (p1 == p3) {
+		cout << "p1和p3相等" << endl;
+	}
+	else {
+		cout << "p1和p3不相等" << endl;
+	}
+}
+
+int main() {
+	test01();
+
+	system("pause");
+	return 0;
+}
+
+```
 
 
 
@@ -862,7 +962,58 @@ c++编译器至少给一个类添加4个函数
 
 ##### 4.5.6 函数调用运算符重载
 
+* 函数调用运算符 ()  也可以重载
+* 由于重载后使用的方式非常像函数的调用，因此称为**仿函数**
+* 仿函数没有固定写法，非常灵活
+* ***匿名对象的使用**
 
+```c++
+class MyPrint
+{
+public:
+	void operator()(string text)
+	{
+		cout << text << endl;
+	}
+
+};
+void test01()
+{
+	//重载的（）操作符 也称为仿函数
+	MyPrint myFunc;
+	myFunc("hello world");
+}
+
+
+class MyAdd
+{
+public:
+	int operator()(int v1, int v2)
+	{
+		return v1 + v2;
+	}
+};
+
+void test02()
+{
+	MyAdd add;
+	int ret = add(10, 10);
+	cout << "ret = " << ret << endl;
+
+	//匿名对象调用  
+	cout << "MyAdd()(100,100) = " << MyAdd()(100, 100) << endl;
+}
+
+int main() {
+
+	test01();
+	test02();
+
+	system("pause");
+
+	return 0;
+}
+```
 
 
 
