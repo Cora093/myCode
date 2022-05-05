@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "22.05.05 学生类和教师类 继承练习", "22.05.05 学生类和教师类 继承练习\22.05.05 学生类和教师类 继承练习.vcxproj", "{B7A6EAA1-A5B2-4BFC-B8DC-A8E1A6328AEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B7A6EAA1-A5B2-4BFC-B8DC-A8E1A6328AEC}.Debug|x64.ActiveCfg = Debug|x64
+		{B7A6EAA1-A5B2-4BFC-B8DC-A8E1A6328AEC}.Debug|x64.Build.0 = Debug|x64
+		{B7A6EAA1-A5B2-4BFC-B8DC-A8E1A6328AEC}.Debug|x86.ActiveCfg = Debug|Win32
+		{B7A6EAA1-A5B2-4BFC-B8DC-A8E1A6328AEC}.Debug|x86.Build.0 = Debug|Win32
+		{B7A6EAA1-A5B2-4BFC-B8DC-A8E1A6328AEC}.Release|x64.ActiveCfg = Release|x64
+		{B7A6EAA1-A5B2-4BFC-B8DC-A8E1A6328AEC}.Release|x64.Build.0 = Release|x64
+		{B7A6EAA1-A5B2-4BFC-B8DC-A8E1A6328AEC}.Release|x86.ActiveCfg = Release|Win32
+		{B7A6EAA1-A5B2-4BFC-B8DC-A8E1A6328AEC}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {248A8E6C-DCE9-41C4-AADF-A6197E055A4F}
+	EndGlobalSection
+EndGlobal
