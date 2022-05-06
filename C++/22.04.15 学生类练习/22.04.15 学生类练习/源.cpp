@@ -9,8 +9,8 @@ using namespace std;
 class Student {
 	friend void dispS(Student& s);
 	friend ostream& operator<<(ostream& cout, Student& s);
-public:
 
+public:
 	static int m_Snum;
 	static int m_Ascore;
 
@@ -57,7 +57,7 @@ ostream& operator<<(ostream& cout, Student& s) {
 
 
 int main() {
-	Student a(2152714, 60, "cora");
+	Student a(2152714, 60, "xiaowang");
 	cout << a << endl;
 	//dispS(a);
 	disp();
