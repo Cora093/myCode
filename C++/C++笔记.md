@@ -155,6 +155,39 @@ int main() {
 
 #### 带有默认参数的函数
 
+在C++中，函数的形参列表中的形参是可以有默认值的。
+
+语法：` 返回值类型  函数名 （参数= 默认值）{}`
+
+
+
+**示例：**
+
+```C++
+int func(int a, int b = 10, int c = 10) {
+	return a + b + c;
+}
+
+//1. 如果某个位置参数有默认值，那么从这个位置往后，从左向右，必须都要有默认值
+//2. 如果函数声明有默认值，函数实现的时候就不能有默认参数
+int func2(int a = 10, int b = 10);
+int func2(int a, int b) {
+	return a + b;
+}
+
+int main() {
+
+	cout << "ret = " << func(20, 20) << endl;
+	cout << "ret = " << func(100) << endl;
+
+	system("pause");
+
+	return 0;
+}
+```
+
+
+
 
 
 #### 函数的重载
@@ -1181,6 +1214,122 @@ int main() {
 #### 4.7  多态
 
 ##### 4.7.1 多态的基本概念
+
+**多态是C++面向对象三大特性之一**
+
+多态分为两类
+
+* 静态多态: **函数重载** 和 **运算符重载 **属于静态多态，复用函数名
+* 动态多态: 派生类和**虚函数**实现运行时多态
+
+
+
+静态多态和动态多态区别：**地址绑定的早晚**
+
+* 静态多态的函数地址早绑定  -  编译阶段确定函数地址
+* 动态多态的函数地址晚绑定  -  运行阶段确定函数地址
+
+函数前面加上virtual关键字，变成**虚函数**，那么编译器在编译的时候就不能确定函数调用了
+
+多态满足条件： 
+
+- 有继承关系
+- 子类**重写**父类中的虚函数
+
+多态使用：
+
+- 父类指针或引用指向子类对象
+
+
+
+
+
+```c++
+class Animal
+{
+public:
+	//Speak函数就是虚函数
+	//函数前面加上virtual关键字，变成虚函数，那么编译器在编译的时候就不能确定函数调用了。
+	virtual void speak()
+	{
+		cout << "动物在说话" << endl;
+	}
+};
+
+class Cat :public Animal
+{
+public:
+	void speak()
+	{
+		cout << "小猫在说话" << endl;
+	}
+};
+
+class Dog :public Animal
+{
+public:
+
+	void speak()
+	{
+		cout << "小狗在说话" << endl;
+	}
+
+};
+//我们希望传入什么对象，那么就调用什么对象的函数
+//如果函数地址在编译阶段就能确定，那么静态联编
+//如果函数地址在运行阶段才能确定，就是动态联编
+
+void DoSpeak(Animal & animal)
+{
+	animal.speak();
+}
+//
+//多态满足条件： 
+//1、有继承关系
+//2、子类重写父类中的虚函数
+//多态使用：
+//父类指针或引用指向子类对象
+
+void test01()
+{
+	Cat cat;
+	DoSpeak(cat);
+
+
+	Dog dog;
+	DoSpeak(dog);
+}
+
+
+int main() {
+
+	test01();
+	system("pause");
+	return 0;
+}
+```
+
+多态的原理：
+
+![image-20220509094334759](https://s2.loli.net/2022/05/09/1AVWSauGtkiL5ph.png)
+
+
+
+使用虚函数前：
+
+![image-20220509095538516](https://s2.loli.net/2022/05/09/UhFRVu6qCv9rpyG.png)
+
+使用虚函数后：
+
+![image-20220509095627956](https://s2.loli.net/2022/05/09/XGmLQzuRi3Kql7j.png)
+
+未重写子类：
+
+![image-20220509095855475](https://s2.loli.net/2022/05/09/dj7PIKm9X8cSQqC.png)
+
+重写子类：
+
+![image-20220509095925359](https://s2.loli.net/2022/05/09/XkTPq4deQrVAvE5.png)
 
 
 
