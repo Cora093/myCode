@@ -1423,7 +1423,105 @@ int main() {
 
 ##### 4.7.4 多态案例二-制作饮品
 
+制作饮品的大致流程为：煮水 -  冲泡 - 倒入杯中 - 加入辅料
 
+
+
+利用多态技术实现本案例，提供抽象制作饮品基类，提供子类制作咖啡和茶叶
+
+```c++
+#include <iostream>
+using namespace std;
+
+class AbstractDrinking {
+public:
+	//烧水
+	virtual void Boil() = 0;
+	//冲泡
+	virtual void Brew() = 0;
+	//倒入杯中
+	virtual void PourInCup() = 0;
+	//加入辅料
+	virtual void PutSomething() = 0;
+	//流程
+	void makeDrink() {
+		Boil();
+		Brew();
+		PourInCup();
+		PutSomething();
+	}
+};
+
+class Coffee :public AbstractDrinking {
+public:
+	//烧水
+	virtual void Boil() {
+		cout << "烧水" << endl;
+	}
+	//冲泡
+	virtual void Brew() {
+		cout << "冲泡咖啡" << endl;
+	}
+	//倒入杯中
+	virtual void PourInCup() {
+		cout << "把咖啡倒入杯中" << endl;
+	}
+	//加入辅料
+	virtual void PutSomething() {
+		cout << "加牛奶" << endl;
+	}
+};
+
+class Tea :public AbstractDrinking {
+public:
+	//烧水
+	virtual void Boil() {
+		cout << "烧水" << endl;
+	}
+	//冲泡
+	virtual void Brew() {
+		cout << "冲泡茶叶" << endl;
+	}
+	//倒入杯中
+	virtual void PourInCup() {
+		cout << "把茶倒入杯中" << endl;
+	}
+	//加入辅料
+	virtual void PutSomething() {
+		cout << "加枸杞" << endl;
+	}
+};
+
+//1.父类引用指向子类对象
+//void doWork(AbstractDrinking& a) {
+//	a.makeDrink();
+//}
+//
+//void test01() {
+//	Coffee c;
+//	doWork(c);
+//	Tea t;
+//	doWork(t);
+//}
+
+//2.父类指针指向子类对象
+void doWork(AbstractDrinking * a) {
+	a->makeDrink();
+	delete a;
+}
+
+void test01() {
+	doWork(new Coffee);
+	doWork(new Tea);
+}
+
+int main() {
+	test01();
+	system("pause");
+	return 0;
+}
+
+```
 
 
 
@@ -1433,13 +1531,249 @@ int main() {
 
 
 
+多态使用时，如果**子类中有属性开辟到堆区**（虚析构使用场景），那么父类指针在释放时无法调用到子类的析构代码
 
+
+
+解决方式：将父类中的析构函数改为**虚析构**或者**纯虚析构**
+
+
+
+虚析构和纯虚析构共性：
+
+* 可以解决父类指针释放子类对象
+* 都需要有具体的函数实现
+
+虚析构和纯虚析构区别：
+
+* 如果是纯虚析构，该类属于抽象类，无法实例化对象
+
+
+
+虚析构语法：
+
+`virtual ~类名(){}`
+
+纯虚析构语法：
+
+` virtual ~类名() = 0;`
+
+`类名::~类名(){}`
+
+
+
+**示例：**
+
+```C++
+class Animal {
+public:
+
+	Animal()
+	{
+		cout << "Animal 构造函数调用！" << endl;
+	}
+	virtual void Speak() = 0;
+
+	//析构函数加上virtual关键字，变成虚析构函数
+	//virtual ~Animal()
+	//{
+	//	cout << "Animal虚析构函数调用！" << endl;
+	//}
+
+
+	virtual ~Animal() = 0;
+};
+
+Animal::~Animal()
+{
+	cout << "Animal 纯虚析构函数调用！" << endl;
+}
+
+//和包含普通纯虚函数的类一样，包含了纯虚析构函数的类也是一个抽象类。不能够被实例化。
+
+class Cat : public Animal {
+public:
+	Cat(string name)
+	{
+		cout << "Cat构造函数调用！" << endl;
+		m_Name = new string(name);
+	}
+	virtual void Speak()
+	{
+		cout << *m_Name <<  "小猫在说话!" << endl;
+	}
+	~Cat()
+	{
+		cout << "Cat析构函数调用!" << endl;
+		if (this->m_Name != NULL) {
+			delete m_Name;
+			m_Name = NULL;
+		}
+	}
+
+public:
+	string *m_Name;
+};
+
+void test01()
+{
+	Animal *animal = new Cat("Tom");
+	animal->Speak();
+
+	//通过父类指针去释放，会导致子类对象可能清理不干净，造成内存泄漏
+	//怎么解决？给基类增加一个虚析构函数
+	//虚析构函数就是用来解决通过父类指针释放子类对象
+	delete animal;
+}
+
+int main() {
+
+	test01();
+
+	system("pause");
+
+	return 0;
+}
+```
+
+
+
+总结：
+
+​	1. 虚析构或纯虚析构就是用来解决通过父类指针释放子类对象
+
+​	2. 如果子类中没有堆区数据，可以不写为虚析构或纯虚析构
+
+​	3. 拥有纯虚析构函数的类也属于抽象类
 
 
 
 ##### 4.7.6 多态案例三-电脑组装
 
 
+
+```c++
+#include<iostream>
+using namespace std;
+
+class CPU {
+public:
+	virtual void calculate() = 0;
+};
+
+class VirtualCard {
+public:
+	virtual void display() = 0;
+};
+
+class Memory {
+public:
+	virtual void storage() = 0;
+};
+
+class Computer {
+public:
+	Computer(CPU* cpu, VirtualCard* vc, Memory* mem) {
+		m_CPU = cpu;
+		m_vc = vc;
+		m_mem = mem;
+	}
+	~Computer() {
+		if (m_CPU != NULL) {
+			delete m_CPU;
+			m_CPU = NULL;
+			cout << "CPU停止工作了" << endl;
+		}
+		if (m_vc != NULL) {
+			delete m_vc;
+			m_vc = NULL;
+			cout << "显卡停止工作了" << endl;
+
+		}	
+		if (m_mem != NULL) {
+			delete m_mem;
+			m_mem = NULL;
+			cout << "内存停止工作了" << endl;
+
+		}
+	}
+	void work() {
+		cout << "电脑开始工作了" << endl;
+		m_CPU->calculate();
+		m_vc->display();
+		m_mem->storage();
+	}
+
+private:
+	CPU* m_CPU;
+	VirtualCard* m_vc;
+	Memory* m_mem;
+};
+
+class ICPU :public CPU {
+public:
+	virtual void calculate() {
+		cout << "I的CPU开始工作了" << endl;
+	}
+};
+
+class IVirtualCard :public VirtualCard {
+public:
+	virtual void display() {
+		cout << "I的显卡开始工作了" << endl;
+	}
+};
+
+class IMemory :public Memory {
+public:
+	virtual void storage() {
+		cout << "I的内存开始工作了" << endl;
+	}
+};
+
+class ACPU :public CPU {
+public:
+	virtual void calculate() {
+		cout << "A的CPU开始工作了" << endl;
+	}
+};
+
+class AVirtualCard :public VirtualCard {
+public:
+	virtual void display() {
+		cout << "A的显卡开始工作了" << endl;
+	}
+};
+
+class AMemory :public Memory {
+public:
+	virtual void storage() {
+		cout << "A的内存开始工作了" << endl;
+	}
+};
+
+
+
+void test01(){
+	Computer* c1=new Computer(new ICPU, new AVirtualCard, new IMemory);
+	c1->work();
+	delete c1;
+	cout << "c1停止工作了" << endl << endl;
+
+	Computer* c2 = new Computer(new ACPU, new AVirtualCard, new AMemory);
+	c2->work();
+	delete c2;
+	cout << "c2停止工作了" << endl << endl;
+
+}
+
+int main() {
+	test01();
+	system("pause");
+	return 0;
+}
+
+```
 
 
 
