@@ -1777,37 +1777,338 @@ int main() {
 
 
 
-
-
-
-
 ### 5 文件操作
+
+程序运行时产生的数据都属于临时数据，程序一旦运行结束都会被释放
+
+通过**文件可以将数据持久化**
+
+C++中对文件操作需要包含头文件 ==&lt; fstream &gt;==
+
+
+
+文件类型分为两种：
+
+1. **文本文件**     -  文件以文本的**ASCII码**形式存储在计算机中
+2. **二进制文件** -  文件以文本的**二进制**形式存储在计算机中，用户一般不能直接读懂它们
+
+
+
+操作文件的三大类:
+
+1. `ofstream`：写操作
+2. `ifstream`： 读操作
+3. `fstream` ： 读写操作
 
 
 
 #### 5.1文本文件
 
-
-
 ##### 5.1.1写文件
+
+写文件步骤如下：
+
+1. 包含头文件   
+
+	\#include <fstream\>
+
+2. 创建流对象  
+
+	ofstream ofs;
+
+3. 打开文件
+
+	ofs.open("文件路径",打开方式);
+
+4. 写数据
+
+	ofs << "写入的数据";
+
+5. 关闭文件
+
+	ofs.close();
+
+	
+
+文件打开方式：
+
+| 打开方式    | 解释                       |
+| ----------- | -------------------------- |
+| ios::in     | 为读文件而打开文件         |
+| ios::out    | 为写文件而打开文件         |
+| ios::ate    | 初始位置：文件尾           |
+| ios::app    | 追加方式写文件             |
+| ios::trunc  | 如果文件存在先删除，再创建 |
+| ios::binary | 二进制方式                 |
+
+**注意：** 文件打开方式可以配合使用，利用|操作符
+
+**例如：**用二进制方式写文件 `ios::binary |  ios:: out`
+
+```c++
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+void test01() {
+	//文本文件 写入操作
+	//1.头文件fstream
+	
+	//2.创建流对象
+	ofstream a;
+
+	//3.指定打开方式
+	a.open("C:\\Users\\lenovo\\Desktop\\test.txt", ios::out);
+
+	//4.写内容
+	a << "姓名：小王" << endl;
+	a << "年龄：18" << endl;
+	a << "性别：男" << endl;
+
+	//5.关闭文件
+	a.close();
+}
+
+int main() {
+
+	test01();
+	system("pause");
+	return 0;
+}
+
+```
+
+
+
+总结：
+
+* 文件操作必须包含头文件 `fstream`
+* 读文件可以利用 `ofstream` ，或者`fstream`类
+* 打开文件时候需要指定操作文件的路径，以及打开方式
+* 利用<<可以向文件中写数据
+* 操作完毕，要关闭文件
 
 
 
 ##### 5.1.2读文件
 
+读文件与写文件步骤相似，但是读取方式相对于比较多
+
+
+
+读文件步骤如下：
+
+1. 包含头文件   
+
+	\#include <fstream\>
+
+2. 创建流对象  
+
+	ifstream ifs;
+
+3. 打开文件并判断文件是否打开成功
+
+	ifs.open("文件路径",打开方式);
+
+4. 读数据
+
+	四种方式读取
+
+5. 关闭文件
+
+	ifs.close();
+
+
+
+```c++
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+void test01() {
+	//文本文件 读文件
+
+	//1.包含头文件
+
+	//2.创建流对象
+	ifstream a;
+
+	//3.打开文件 并且判断是否打开成功
+	a.open("C:\\Users\\lenovo\\Desktop\\test.txt", ios::in);
+
+	if (!a.is_open()) {
+		cout << "文件打开失败" << endl;
+		return;
+	}
+
+	//4.读数据
+
+	//第一种方式（字符数组）
+	//char buf[1024] = { 0 };
+	//while (a >> buf) {
+	//	cout << buf << endl;
+	//}
+
+	//第二种方式（字符数组）
+	//char buf[1024] = { 0 };
+	//while (a.getline(buf, sizeof(buf))) {
+	//	cout << buf << endl;
+	//}
+
+	//第三种方式（字符串）
+	string buf;
+	while (getline(a, buf)) {
+		cout << buf << endl;
+	}
+
+	//第四种（不推荐）
+	//char c;
+	//while ((c = a.get()) != EOF) {
+	//	cout << c;
+	//}
+
+	//5.关闭文件
+	a.close();
+
+}
+
+int main() {
+
+	test01();
+	system("pause");
+	return 0;
+}
+```
+
+
+
+总结：
+
+- 读文件可以利用 ifstream  ，或者fstream类
+- 利用is_open函数可以判断文件是否打开成功
+- close 关闭文件 
+
 
 
 #### 5.2 二进制文件
+
+以二进制的方式对文件进行读写操作
+
+打开方式要指定为 ==ios::binary==
 
 
 
 ##### 5.2.1 写文件
 
+二进制方式写文件主要利用流对象调用成员函数write
+
+函数原型 ：`ostream& write(const char * buffer,int len);`
+
+参数解释：字符指针buffer指向内存中一段存储空间。len是读写的字节数
 
 
-5.2.2 读文件
+
+```c++
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+//二进制文件 写文件
+class Person {
+public:
+	char m_Name[64];
+	int m_Age;
+};
+
+void test01() {
+	//1.包含头文件
+	//2.创建流对象
+	ofstream a;
+
+	//3.打开文件（打开方式为二进制写入）
+	a.open("C:\\Users\\lenovo\\Desktop\\person.txt", ios::out | ios::binary);
+
+	//4.写文件
+	Person p = { "张三",18 };
+	a.write((const char*)&p, sizeof(Person));
+	//5.关闭文件
+	a.close();
+}
+
+int main() {
+
+	test01();
+	system("pause");
+	return 0;
+}
+```
 
 
 
+- 文件输出流对象 可以通过write函数，以二进制方式写数据
 
+
+
+##### 5.2.2 读文件
+
+
+
+二进制方式读文件主要利用流对象调用成员函数read
+
+函数原型：`istream& read(char *buffer,int len);`
+
+参数解释：字符指针buffer指向内存中一段存储空间。len是读写的字节数
+
+
+
+```c++
+include <iostream>
+#include <fstream>
+using namespace std;
+
+
+class Person
+{
+public:
+	char m_Name[64];
+	int m_Age;
+};
+
+//二进制文件 读文件
+void test01() {
+	//1.包含头文件
+	//2.创建流对象
+	ifstream a;
+
+	//3.打开文件 判断文件是否打开成功
+	a.open("C:\\Users\\lenovo\\Desktop\\person.txt", ios::in | ios::binary);
+	if (!a.is_open()) {
+		cout << "文件打开失败" << endl;
+		return;
+	}
+
+	//4.读文件
+	Person p;
+	a.read((char*)&p, sizeof(Person));
+
+	cout << p.m_Name << endl << p.m_Age << endl;
+
+	//5.关闭文件
+	a.close();
+}
+
+
+int main() {
+
+	test01();
+	system("pause");
+	return 0;
+}
+
+```
+
+
+
+- 文件输入流对象 可以通过read函数，以二进制方式读数据
 
