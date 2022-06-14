@@ -183,7 +183,7 @@ void WorkerManager::delEmp() {
 				//删除该员工
 				//将后面员工的信息前移覆盖
 				for (int i = this->isExist(id); i < this->m_EmpNum - 1; i++) {
-					this->m_EmpArray[id] = this->m_EmpArray[id + 1];
+					this->m_EmpArray[i] = this->m_EmpArray[i + 1];
 				}
 				//数组成员数量--
 				this->m_EmpNum--;
