@@ -2216,11 +2216,101 @@ int main() {
 
 ##### 1.2.2 函数模板注意事项
 
+注意事项：
 
+* 自动类型推导，必须推导出一致的数据类型T,才可以使用
+
+
+* 模板必须要确定出T的数据类型，才可以使用
 
 
 
 ##### 1.2.3 函数模板案例
+
+案例描述：
+
+* 利用函数模板封装一个排序的函数，可以对**不同数据类型数组**进行排序
+* 排序规则从大到小，排序算法为**选择排序**
+* 分别利用`char`数组和`int`数组进行测试
+
+```c++
+#include <iostream>
+using namespace std;
+
+//使用模板函数对数组进行排序
+//排序规则 从小到大
+//排序算法 选择排序
+//测试用例 int char double 数组
+
+//显示函数模板
+template<typename T>
+void showArray(T arr[], int len) {
+	for (int i = 0; i < len; i++) {
+		cout << arr[i] << " ";
+	}
+	cout << endl;
+}
+
+//交换函数模板
+template<typename T>
+void mySwap(T& a, T& b) {
+	T temp = a;
+	a = b;
+	b = temp;
+}
+
+//排序函数模板
+template<typename T>
+void mySort(T arr[],int len) {
+	for (int i = 0; i < len; i++) {
+		int min = i;//设定默认最小值
+		for (int j = i + 1; j < len; j++) {
+			if (arr[j] < arr[min]) {
+				min = j;
+			}
+		}
+		if (min != i) {
+			//交换min与i
+			mySwap(arr[min], arr[i]);
+		}
+	}
+}
+
+
+void test01() {
+	char charArr[] = "bdacef";
+	cout << "排序前的字符数组：";
+	showArray(charArr, sizeof(charArr)-1);
+
+	mySort(charArr, sizeof(charArr)-1);
+	
+	cout << "排序后的字符数组：";
+	showArray(charArr, sizeof(charArr)-1);
+}
+
+void test02() {
+	int intArr[6] = { 3,2,4,6,5,1 };
+	cout << "排序前的整形数组：";
+	showArray(intArr, sizeof(intArr)/4);
+
+	mySort(intArr, sizeof(intArr)/4);
+
+	cout << "排序后的整形数组：";
+	showArray(intArr, sizeof(intArr)/4);
+}
+
+int main() {
+	
+	test01();
+	test02();
+
+	system("pause");
+ 	return 0;
+}
+
+```
+
+
 
 
 
