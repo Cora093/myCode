@@ -15,7 +15,7 @@ Employee::Employee() {
 
 	if (Employee::m_EmpNum > 0) {		//如果职工数量>0
 		//创建链表
-		this->m_EmpArray = new Employee* [Employee::m_EmpNum];
+		Employee::m_EmpArray = new Employee* [Employee::m_EmpNum];
 
 		//读取数据
 		ifstream ifs(FILENAME, ios::in);
@@ -34,7 +34,9 @@ Employee::Employee() {
 			ifs >> ID >> name >> sex >> phoneNum >> dept >> salary;
 			tmp = new Employee(ID, name, sex, phoneNum, dept, salary);
 			this->m_EmpArray[i] = tmp;
-			//ifs.read((char*)m_EmpArray[i], sizeof(Employee));
+			 
+			 
+			//ifs.read((char*)Employee::m_EmpArray, sizeof(Employee));
 
 		}
 		
@@ -441,29 +443,30 @@ void Employee::save() {
 	//ofs.open(FILENAME, ios::out | ios::binary);
 
 	for (int i = 0; i < Employee::m_EmpNum; i++) {
-		ofs << this->m_EmpArray[i]->m_ID << " "
-			<< this->m_EmpArray[i]->m_Name << " "
-			<< this->m_EmpArray[i]->m_Sex << " "
-			<< this->m_EmpArray[i]->m_PhoneNumber << " "
-			<< this->m_EmpArray[i]->m_Department << " "
+		ofs << this->m_EmpArray[i]->m_ID 
+			<< this->m_EmpArray[i]->m_Name 
+			<< this->m_EmpArray[i]->m_Sex 
+			<< this->m_EmpArray[i]->m_PhoneNumber 
+			<< this->m_EmpArray[i]->m_Department 
 			<< this->m_EmpArray[i]->m_Salary << endl;
+		 
 		//ofs.write((const char*)m_EmpArray[i], sizeof(Employee));
 	}
 
 	ofs.close();
 
 	//写入职工人数
-	ofs.open(EMPNUM, ios::out);
-	ofs << Employee::m_EmpNum;
+	ofs.open(EMPNUM, ios::binary);
+	ofs.write((const char*)&m_EmpNum, sizeof(int));
 	ofs.close();
 
 }
 
 //获取文件中的职工人数
 int Employee::getEmpNum() {
-	ifstream ifs(EMPNUM, ios::in);
+	ifstream ifs(EMPNUM, ios::binary);
 	int tmp;
-	ifs >> tmp ;
+	ifs.read((char*)&tmp, sizeof(int));
 	ifs.close();
 	if (tmp < 0) {
 		tmp = 0;

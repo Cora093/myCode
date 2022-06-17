@@ -36,7 +36,7 @@ int main() {
 		case 4: //按姓名查找职工
 			em.resByName();
 			break;
-		case 5: //按科室查找职工
+		case 5: //按编号查找职工
 			em.resByNum();
 			break;
 		case 6: //按科室统计职工工资
