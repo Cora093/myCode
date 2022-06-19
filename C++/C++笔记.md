@@ -2584,6 +2584,94 @@ int main() {
 
 ##### 1.3.1 类模板语法
 
+类模板作用：
+
+* 建立一个通用类，类中的成员 数据类型可以不具体制定，用一个**虚拟的类型**来代表。
+
+
+
+**语法：** 
+
+```c++
+template<class T>
+类
+```
+
+
+
+总结：类模板和函数模板语法相似，在声明模板template后面加类，此类称为类模板
+
+##### 1.3.2 类模板与函数模板区别
+
+
+
+类模板与函数模板区别主要有两点：
+
+1. 类模板没有自动类型推导的使用方式
+2. 类模板在模板参数列表中可以有默认参数
+
+
+
+
+**示例：**
+
+```C++
+#include <iostream>
+using namespace std;
+#include <string>
+
+template<class NameType,class AgeType = int>//默认AgeType为整形
+class Person {
+public:
+	Person(NameType name, AgeType age) {
+		this->m_Name = name;
+		this->m_Age = age;
+	}
+
+	void showInfo() {
+		cout << this->m_Name << '\t' << this->m_Age << endl;
+	}
+
+	NameType m_Name;
+	AgeType m_Age;
+};
+
+void test01() {
+	//1.类模板不能自动类型推导
+	//Person p("张三"，100);错误
+	Person<string, int> p("张三",99);
+
+
+	//2.类模板在模板参数列表中可以有默认参数
+	Person<string> p1("李四", 98);//由于第5行有默认参数
+	p1.showInfo();
+
+}
+
+int main() {
+	test01();
+
+	system("pause");
+	return 0;
+}
+```
+
+总结：
+
+* 类模板使用只能用显示指定类型方式
+* 类模板中的模板参数列表可以有默认参数
+
+
+
+#### 1.3.3 类模板中成员函数创建时机
+
+
+
+类模板中成员函数和普通类中成员函数创建时机是有区别的：
+
+* 普通类中的成员函数一开始就可以创建
+* 类模板中的成员函数在调用时才创建
+
 
 
 
