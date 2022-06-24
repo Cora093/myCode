@@ -24,11 +24,11 @@ void printPerson1(Person<string, int>& p) {
 	p.showPerson();
 }
 
-
 void test01() {
 	Person<string, int>p1("张三", 39);
 	printPerson1(p1);
 }
+
 
 //方法2.参数模板化
 template<class T1,class T2>
