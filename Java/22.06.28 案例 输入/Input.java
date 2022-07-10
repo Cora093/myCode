@@ -5,7 +5,7 @@ public class Input {
 		//步骤
 		//1.引入Scanner类所在的包
 		//2.创建Scanner对象
-		Scanner sc =new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		//3.接受用户的输入(使用相关的方法)
 		System.out.println("请输入名字");
 		String name = sc.next();//接收输入的String
